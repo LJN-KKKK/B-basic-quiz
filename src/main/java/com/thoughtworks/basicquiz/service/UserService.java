@@ -12,7 +12,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User addUser(User user) {
+    public Long addUser(User user) {
         return userRepository.addUser(user);
     }
 

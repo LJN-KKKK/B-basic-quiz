@@ -12,12 +12,13 @@ public class UserRepository {
     private final Map<Long, User> userMap = new HashMap<Long, User>(){{
         put((long) 1, new User(1, "111", 12, "111", "no desc"));
     }};
-    private static final AtomicLong USER_ID = new AtomicLong(1);
+    private static final AtomicLong USER_ID = new AtomicLong(2);
 
-    public User addUser(User user){
+    public Long addUser(User user){
+        user.setId(USER_ID.get());
         userMap.put(USER_ID.get(), user);
         USER_ID.set(USER_ID.get() + 1);
-        return user;
+        return user.getId();
     }
 
 

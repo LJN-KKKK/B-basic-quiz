@@ -224,7 +224,7 @@ $ curl -v -H "Content-Type: application/json" --data @education.json localhost:8
 
 一个示例如下：
 
-```json
+```shell````~~~~********~~~~````
 curl -v localhost:8080/users/666
 *   Trying ::1...
 * TCP_NODELAY set
