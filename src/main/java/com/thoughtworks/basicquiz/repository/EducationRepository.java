@@ -1,6 +1,7 @@
 package com.thoughtworks.basicquiz.repository;
 
 import com.thoughtworks.basicquiz.model.Education;
+import com.thoughtworks.basicquiz.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,9 +18,7 @@ public class EducationRepository {
     }};
 
     public void addEducation(Long id, Education education){
-        if(!educationMap.containsKey(id)){
-            educationMap.put(id, new ArrayList<>());
-        }
+        if(!educationMap.containsKey(id)) educationMap.put(id, new ArrayList<>());
         education.setUserId(id);
         educationMap.get(id).add(education);
     }
@@ -27,5 +26,13 @@ public class EducationRepository {
 
     public List<Education> getEducationById(Long id){
         return educationMap.get(id);
+    }
+
+    public void addUser(User user){
+        educationMap.put(user.getId(), new ArrayList<>());
+    }
+
+    public boolean userExist(Long id){
+        return educationMap.containsKey(id);
     }
 }

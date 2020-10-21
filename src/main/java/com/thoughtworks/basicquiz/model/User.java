@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -18,7 +19,7 @@ public class User {
     @Size(min = 1, max = 128, message = "username长度需为1-128位")
     private String name;
 
-    @NotEmpty(message = "age不能为空")
+    @NotNull(message = "age不能为空")
     @Min(17)
     private long age;
 

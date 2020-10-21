@@ -14,6 +14,7 @@ public class UserRepository {
     }};
     private static final AtomicLong USER_ID = new AtomicLong(2);
 
+
     public Long addUser(User user){
         user.setId(USER_ID.get());
         userMap.put(USER_ID.get(), user);
@@ -25,4 +26,9 @@ public class UserRepository {
     public User getUserById(long id) {
         return userMap.get(id);
     }
+
+    public boolean userExist(Long id){
+        return userMap.containsKey(id);
+    }
+
 }
