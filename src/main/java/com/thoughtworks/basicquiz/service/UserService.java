@@ -17,8 +17,9 @@ public class UserService {
     }
 
     public Long addUser(User user) {
+        Long user_id = userRepository.addUser(user);
         educationRepository.addUser(user);
-        return userRepository.addUser(user);
+        return user_id;
     }
 
     public User getUserById(long id) {

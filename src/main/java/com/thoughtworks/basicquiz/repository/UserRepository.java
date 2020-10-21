@@ -27,8 +27,4 @@ public class UserRepository {
         return userMap.get(id);
     }
 
-    public boolean userExist(Long id){
-        return userMap.containsKey(id);
-    }
-
 }
