@@ -7,6 +7,8 @@ import com.thoughtworks.basicquiz.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -35,5 +37,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@PathVariable long id) {
         return userService.getUserById(id);
+    }
+
+    @GetMapping("/{id}/educations")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Education> getEducationById(@PathVariable long id) {
+        return educationService.getEducationById(id);
     }
 }
