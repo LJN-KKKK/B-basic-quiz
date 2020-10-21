@@ -20,6 +20,7 @@ public class EducationRepository {
         if(!educationMap.containsKey(id)){
             educationMap.put(id, new ArrayList<>());
         }
+        education.setUserId(id);
         educationMap.get(id).add(education);
     }
 
