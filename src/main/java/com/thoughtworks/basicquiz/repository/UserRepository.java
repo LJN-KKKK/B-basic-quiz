@@ -5,15 +5,23 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class UserRepository {
-    private Map<Integer, User> userList = new HashMap<>();;
-    private static Integer USER_ID = 1;
+    private final Map<Long, User> userMap = new HashMap<Long, User>(){{
+        put((long) 1, new User(1, "111", 12, "111", "no desc"));
+    }};
+    private static final AtomicLong USER_ID = new AtomicLong(1);
 
     public User addUser(User user){
-        userList.put(USER_ID, user);
-        USER_ID++;
+        userMap.put(USER_ID.get(), user);
+        USER_ID.set(USER_ID.get() + 1);
         return user;
+    }
+
+
+    public User getUserById(long id) {
+        return userMap.get(id);
     }
 }
