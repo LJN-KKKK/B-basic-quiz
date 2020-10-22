@@ -13,10 +13,10 @@ public class UserRepository {
     }};
     private static Long user_id = 2L;
 
-
     public Long addUser(User user){
         user.setId(user_id);
         userMap.put(user_id, user);
+        // TODO GTB-4: - ++i和i++操作不是线程安全的，可以了解下AtomicInteger
         user_id++;
         return user.getId();
     }

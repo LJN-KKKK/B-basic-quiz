@@ -16,6 +16,7 @@ public class User {
     private long id;
 
     @NotEmpty(message = "username不能为空")
+    // TODO GTB-3: - 题目要求的是长度范围是1 - 128 bytes。而@Size是标记字符的长度。
     @Size(min = 1, max = 128, message = "username长度需为1-128位")
     private String name;
 
