@@ -5,28 +5,28 @@ import com.thoughtworks.basicquiz.model.User;
 import com.thoughtworks.basicquiz.repository.EducationRepository;
 import com.thoughtworks.basicquiz.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
-    private final UserRepository userRepository;
-    private final EducationRepository educationRepository;
+    final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, EducationRepository educationRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.educationRepository = educationRepository;
+    }
+
+
+    public User getUserById(Long id) {
+        return userRepository.findOneById(id)
+                .orElseThrow(() -> new UserNotExistException("User Not Found"));
     }
 
     public Long addUser(User user) {
-        Long user_id = userRepository.addUser(user);
-        educationRepository.addUser(user);
-        return user_id;
+        userRepository.save(user);
+        return user.getId();
     }
 
-    public User getUserById(long id) {
-        User user = userRepository.getUserById(id);
-        if(user == null) {
-            throw new UserNotExistException("user does not exist");
-        }
-        return user;
-    }
 }

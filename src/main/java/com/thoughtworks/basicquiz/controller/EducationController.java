@@ -25,9 +25,9 @@ public class EducationController {
         educationService.addEducation(id, education);
     }
 
-    @GetMapping("/{id}/educations")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Education> getEducationById(@PathVariable long id) {
-        return educationService.getEducationById(id);
-    }
+//    @GetMapping("/{id}/educations")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Education> getEducationById(@PathVariable long id) {
+//        return educationService.getEducationById(id);
+//    }
 }

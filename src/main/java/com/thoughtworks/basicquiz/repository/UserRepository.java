@@ -1,29 +1,17 @@
 package com.thoughtworks.basicquiz.repository;
 
 import com.thoughtworks.basicquiz.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
-public class UserRepository {
-    private final Map<Long, User> userMap = new HashMap<Long, User>(){{
-        put(1L, new User(1, "111", 12, "111", "no desc"));
-    }};
-    private static Long user_id = 2L;
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    public Long addUser(User user){
-        user.setId(user_id);
-        userMap.put(user_id, user);
-        // TODO GTB-4: - ++i和i++操作不是线程安全的，可以了解下AtomicInteger
-        user_id++;
-        return user.getId();
-    }
+    Optional<User> findOneById(Long id);
 
-
-    public User getUserById(long id) {
-        return userMap.get(id);
-    }
 
 }
