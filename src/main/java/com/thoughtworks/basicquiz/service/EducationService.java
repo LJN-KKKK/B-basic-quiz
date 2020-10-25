@@ -16,14 +16,20 @@ public class EducationService {
     }
 
     public void addEducation(Long id, Education education) {
-        if(!educationRepository.userExist(id)) throw new UserNotExistException("user does not exist");
+        if(!educationRepository.userExist(id)) {
+            throw new UserNotExistException("user does not exist");
+        }
         educationRepository.addEducation(id, education);
     }
 
     public List<Education> getEducationById(Long id){
-        if(!educationRepository.userExist(id)) throw new UserNotExistException("user does not exist");
+        if(!educationRepository.userExist(id)) {
+            throw new UserNotExistException("user does not exist");
+        }
         List<Education> educationsList = educationRepository.getEducationById(id);
-        if(educationsList.isEmpty()) throw new UserHasNoEducationException("user has no education");
+        if(educationsList.isEmpty()) {
+            throw new UserHasNoEducationException("user has no education");
+        }
         return educationsList;
     }
 }

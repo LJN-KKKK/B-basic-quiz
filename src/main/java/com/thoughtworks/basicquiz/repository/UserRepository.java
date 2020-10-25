@@ -9,7 +9,7 @@ import java.util.Map;
 @Repository
 public class UserRepository {
     private final Map<Long, User> userMap = new HashMap<Long, User>(){{
-        put((long) 1, new User(1, "111", 12, "111", "no desc"));
+        put(1L, new User(1, "111", 12, "111", "no desc"));
     }};
     private static Long user_id = 2L;
 

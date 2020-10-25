@@ -24,7 +24,9 @@ public class UserService {
 
     public User getUserById(long id) {
         User user = userRepository.getUserById(id);
-        if(user == null) throw new UserNotExistException("user does not exist");
+        if(user == null) {
+            throw new UserNotExistException("user does not exist");
+        }
         return user;
     }
 }
