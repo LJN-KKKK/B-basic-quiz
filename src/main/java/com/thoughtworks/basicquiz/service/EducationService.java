@@ -5,7 +5,6 @@ import com.thoughtworks.basicquiz.repository.EducationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @Transactional

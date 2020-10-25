@@ -3,10 +3,6 @@ package com.thoughtworks.basicquiz.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -14,7 +10,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Setter
 @Entity
-@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +22,7 @@ public class User {
     private String avatar;
 
     private String description;
+
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Education> educations;
 }

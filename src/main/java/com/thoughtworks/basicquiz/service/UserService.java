@@ -2,12 +2,10 @@ package com.thoughtworks.basicquiz.service;
 
 import com.thoughtworks.basicquiz.exception.UserNotExistException;
 import com.thoughtworks.basicquiz.model.User;
-import com.thoughtworks.basicquiz.repository.EducationRepository;
 import com.thoughtworks.basicquiz.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @Transactional
