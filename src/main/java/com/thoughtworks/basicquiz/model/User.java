@@ -23,6 +23,4 @@ public class User {
 
     private String description;
 
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Education> educations;
 }
