@@ -12,13 +12,16 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,6 +36,8 @@ public class EducationControllerTest {
     private EducationService educationService;
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private JacksonTester<List<Education>> educationListJson;
 
     private Education firstEducation;
     private List<Education> educationList;
@@ -69,12 +74,17 @@ public class EducationControllerTest {
         class WhenUserExists{
             @Test
             public void should_return_educations() throws Exception {
+
                 when(educationService.getEducationById(123L)).thenReturn(educationList);
 
-                mockMvc.perform(get("/users/{id}/educations", 123L))
+                MockHttpServletResponse response = mockMvc.perform(get("/users/{id}/educations", 123L))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(jsonPath("$[0].title", is("whatever")));
+                        .andReturn()
+                        .getResponse();
+
+                assertThat(response.getContentAsString()).isEqualTo(
+                        educationListJson.write(educationList).getJson());
 
                 verify(educationService).getEducationById(123L);
             }

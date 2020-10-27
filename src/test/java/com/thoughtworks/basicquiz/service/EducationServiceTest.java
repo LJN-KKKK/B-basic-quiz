@@ -14,16 +14,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EducationServiceTest {
     private EducationService educationService;
     @Mock
     private EducationRepository educationRepository;
+    @Mock
     private UserRepository userRepository;
+
     private User user;
     private Education education;
     private List<Education> educationList;
@@ -71,8 +74,6 @@ public class EducationServiceTest {
                         .build());
             }
         }
-
-
     }
 
     @Nested
@@ -81,11 +82,13 @@ public class EducationServiceTest {
         class WhenEducationIsValid {
             @Test
             public void should_return_void() {
-                when(educationRepository.save(education));
+                when(userRepository.findOneById(user.getId())).thenReturn(Optional.of(user));
+                when(educationRepository.save(education)).thenReturn(null);
 
                 educationService.addEducation(user.getId(), education);
 
-//                assertThat(userId).isEqualTo(123L);
+                verify(userRepository, times(1)).findOneById(user.getId());
+                verify(educationRepository, times(1)).save(education);
             }
         }
     }

@@ -19,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -157,6 +156,7 @@ public class UserControllerTest {
                 verify(userService).addUser(newUserRequest);
             }
         }
+
 //        @Nested
 //        class WhenRequestIsNotValid {
 //            @Test
