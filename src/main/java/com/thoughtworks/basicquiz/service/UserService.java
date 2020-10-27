@@ -23,8 +23,7 @@ public class UserService {
     }
 
     public Long addUser(User user) {
-        userRepository.save(user);
-        return user.getId();
+        return userRepository.save(user).getId();
     }
 
 }

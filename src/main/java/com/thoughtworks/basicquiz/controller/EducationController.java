@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -24,9 +25,9 @@ public class EducationController {
         educationService.addEducation(id, education);
     }
 
-//    @GetMapping("/{id}/educations")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Education> getEducationById(@PathVariable long id) {
-//        return educationService.getEducationById(id);
-//    }
+    @GetMapping("/{id}/educations")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Education> getEducationById(@PathVariable long id) {
+        return educationService.getEducationById(id);
+    }
 }
