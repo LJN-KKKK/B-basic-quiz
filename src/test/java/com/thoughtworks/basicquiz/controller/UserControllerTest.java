@@ -1,5 +1,6 @@
 package com.thoughtworks.basicquiz.controller;
 
+import com.thoughtworks.basicquiz.exception.UserNotExistException;
 import com.thoughtworks.basicquiz.model.User;
 import com.thoughtworks.basicquiz.service.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -54,33 +55,55 @@ public class UserControllerTest {
         Mockito.reset(userService);
     }
 
-    @Test
-    public void should_return_user_by_id_with_jsonPath() throws Exception {
-        when(userService.getUserById(123L)).thenReturn(firstUser);
+    @Nested
+    class GetUserById{
+        @Nested
+        class WhenUserExists{
+            @Test
+            public void should_return_user_by_id_with_jsonPath() throws Exception {
+                when(userService.getUserById(123L)).thenReturn(firstUser);
 
-        mockMvc.perform(get("/users/{id}", 123L))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name", is("Panda")));
+                mockMvc.perform(get("/users/{id}", 123L))
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("$.name", is("Panda")));
 
-        verify(userService).getUserById(123L);
+                verify(userService).getUserById(123L);
+            }
+
+            @Test
+            public void should_return_user_by_id_with_jacksontester() throws Exception {
+                when(userService.getUserById(123L)).thenReturn(firstUser);
+
+                MockHttpServletResponse response = mockMvc.perform(get("/users/{id}", 123))
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                        .andReturn()
+                        .getResponse();
+
+                assertThat(response.getContentAsString()).isEqualTo(
+                        userJson.write(firstUser).getJson());
+
+                verify(userService).getUserById(123L);
+            }
+        }
+
+        @Nested
+        class WhenUserNotExist{
+            @Test
+            public void should_return_NOT_FOUND() throws Exception{
+                when(userService.getUserById(123L)).thenThrow(new UserNotExistException("user not exist"));
+
+                mockMvc.perform(get("/users/{id}", 123L))
+                        .andExpect(status().isNotFound())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("$.message", is("user not exist")));
+
+                verify(userService).getUserById(123L);
+            }
+        }
     }
 
-    @Test
-    public void should_return_user_by_id_with_jacksontester() throws Exception {
-        when(userService.getUserById(123L)).thenReturn(firstUser);
-
-        MockHttpServletResponse response = mockMvc.perform(get("/users/{id}", 123))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getContentAsString()).isEqualTo(
-                userJson.write(firstUser).getJson());
-
-        verify(userService).getUserById(123L);
-    }
 
     @Nested
     class CreateUser {
