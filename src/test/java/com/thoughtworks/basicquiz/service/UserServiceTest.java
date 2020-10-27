@@ -33,6 +33,7 @@ public class UserServiceTest {
                 .avatar("http://...")
                 .description("A good guy.")
                 .build();
+
     }
 
     @Nested
@@ -67,6 +68,21 @@ public class UserServiceTest {
                 UserNotExistException thrownException = assertThrows(UserNotExistException.class, () -> userService.getUserById(233L));
 
                 assertThat(thrownException.getMessage()).containsSequence("User Not Found");
+            }
+        }
+    }
+
+    @Nested
+    class CreateUser{
+        @Nested
+        class WhenUserIsValid {
+            @Test
+            public void should_return_user_id() {
+                when(userRepository.save(user)).thenReturn(user);
+
+                Long userId = userService.addUser(user);
+
+                assertThat(userId).isEqualTo(123L);
             }
         }
     }

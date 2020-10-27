@@ -1,5 +1,6 @@
 package com.thoughtworks.basicquiz.controller;
 
+import com.thoughtworks.basicquiz.exception.ErrorResult;
 import com.thoughtworks.basicquiz.exception.UserNotExistException;
 import com.thoughtworks.basicquiz.model.User;
 import com.thoughtworks.basicquiz.service.UserService;
@@ -18,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -38,6 +40,8 @@ public class UserControllerTest {
     private JacksonTester<User> userJson;
 
     private User firstUser;
+    private User userNotValid;
+    private ErrorResult.ErrorResultBuilder errorResult;
 
     @BeforeEach
     public void beforeEach() {
@@ -48,6 +52,19 @@ public class UserControllerTest {
                 .avatar("http://...")
                 .description("A good guy.")
                 .build();
+
+        userNotValid = User.builder()
+                .id(123L)
+                .age(24L)
+                .avatar("http://...")
+                .description("A good guy.")
+                .build();
+
+        errorResult = ErrorResult.builder()
+                .timestamp("13:13")
+                .status(400)
+                .error("BAD_REQUEST")
+                .message("name不能为空");
     }
 
     @AfterEach
@@ -140,5 +157,19 @@ public class UserControllerTest {
                 verify(userService).addUser(newUserRequest);
             }
         }
+//        @Nested
+//        class WhenRequestIsNotValid {
+//            @Test
+//            public void should_return_BAD_REQUEST() throws Exception {
+//                when(userService.addUser(userNotValid)).thenThrow(new MethodArgumentNotValidException());
+//
+//                mockMvc.perform(get("/users", 123L))
+//                        .andExpect(status().isBadRequest())
+//                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//                        .andExpect(jsonPath("$.message", is("user not exist")));
+//
+//                verify(userService).getUserById(123L);
+//            }
+//        }
     }
 }
