@@ -1,5 +1,6 @@
 package com.thoughtworks.basicquiz.repository;
 
+import com.thoughtworks.basicquiz.model.Education;
 import com.thoughtworks.basicquiz.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,36 +8,41 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
-public class UserRepositoryTest {
+public class EducationRepositoryTest {
+
     @Autowired
-    private UserRepository userRepository;
+    private EducationRepository educationRepository;
     @Autowired
     private TestEntityManager entityManager;
 
     @Test
-    void should_return_user_when_id_exists() {
-        entityManager.persistAndFlush(User.builder()
+    void should_return_educations_when_id_exists() {
+        User user = User.builder()
                 .name("Panda")
                 .age(24L)
                 .avatar("http://...")
                 .description("A good guy.")
+                .build();
+
+        entityManager.persistAndFlush(Education.builder()
+                .title("whatever")
+                .year(2024)
+                .description("A")
                 .build());
 
-        Optional<User> foundUser = userRepository.findOneById(1L);
-
-        assertThat(foundUser.isPresent()).isTrue();
-        assertThat(foundUser.get()).isEqualTo(User.builder()
+        List<Education> foundEducations = educationRepository.findAllByUserId(1L);
+        assertThat(foundEducations.get(0)).isEqualTo(Education.builder()
                 .id(1L)
-                .name("Panda")
-                .age(24L)
-                .avatar("http://...")
-                .description("A good guy.")
+                .title("whatever")
+                .year(2024)
+                .description("A")
+//                .user(user)
                 .build());
     }
 }

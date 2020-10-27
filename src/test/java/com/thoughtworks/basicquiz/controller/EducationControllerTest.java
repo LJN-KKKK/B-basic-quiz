@@ -14,18 +14,20 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -38,6 +40,8 @@ public class EducationControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private JacksonTester<List<Education>> educationListJson;
+    @Autowired
+    private JacksonTester<Education> educationJson;
 
     private Education firstEducation;
     private List<Education> educationList;
@@ -103,6 +107,30 @@ public class EducationControllerTest {
                         .andExpect(jsonPath("$.message", is("user not exist")));
 
                 verify(educationService).getEducationById(123L);
+            }
+        }
+    }
+
+    @Nested
+    class CreateEducation{
+
+        @Nested
+        class WhenRequestIsValid{
+
+            @Test
+            public void should_create_new_education_and_return_CREATED() throws Exception {
+
+                MockHttpServletRequestBuilder requestBuilder = post("/users/1/educations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(educationJson.write(firstEducation).getJson());
+
+                MockHttpServletResponse response = mockMvc.perform(requestBuilder)
+                        .andReturn()
+                        .getResponse();
+
+                assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+
+                verify(educationService, times(1)).addEducation(1L, firstEducation);
             }
         }
     }
