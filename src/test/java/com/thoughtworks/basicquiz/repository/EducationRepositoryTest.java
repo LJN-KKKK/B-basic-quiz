@@ -23,17 +23,18 @@ public class EducationRepositoryTest {
 
     @Test
     void should_return_educations_when_id_exists() {
-        User user = User.builder()
+        User panda = entityManager.persistAndFlush(User.builder()
                 .name("Panda")
                 .age(24L)
                 .avatar("http://...")
                 .description("A good guy.")
-                .build();
+                .build());
 
         entityManager.persistAndFlush(Education.builder()
                 .title("whatever")
                 .year(2024)
                 .description("A")
+                .user(panda)
                 .build());
 
         List<Education> foundEducations = educationRepository.findAllByUserId(1L);
@@ -42,7 +43,7 @@ public class EducationRepositoryTest {
                 .title("whatever")
                 .year(2024)
                 .description("A")
-//                .user(user)
+                .user(panda)
                 .build());
     }
 }
